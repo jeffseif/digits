@@ -20,6 +20,6 @@ A digit classifier
 
     FIXME
 
-    > ./tides.sh
+    > ./digits.sh
 
     FIXME
