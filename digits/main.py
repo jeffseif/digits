@@ -1,12 +1,10 @@
 #! /usr/bin/env python3
-import numpy
-import scipy
-import sklearn
-
 from digits import __author__
 from digits import __description__
 from digits import __version__
 from digits import __year__
+from digits import DEFAULT_MODEL_FILENAME
+from digits.model import Model
 
 
 def main():
@@ -34,7 +32,30 @@ def main():
         default=0,
         help='Increase output verbosity',
     )
+    parser.add_argument(
+        '--model-filename',
+        default=DEFAULT_MODEL_FILENAME,
+        help='Path to classifier serialization',
+    )
+    parser.add_argument(
+        '--show-score',
+        action='store_true',
+        default=False,
+        help='Show classifier F1 score',
+    )
+    parser.add_argument(
+        'mode',
+        choices=(
+            'load',
+            'train',
+        ),
+    )
     args = parser.parse_args()
+
+    if args.mode == 'train':
+        Model(args).train()
+    elif args.mode == 'load':
+        Model(args).load()
 
 
 if __name__ == '__main__':

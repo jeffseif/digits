@@ -14,6 +14,7 @@ RUN     apt-get install \
             python3-sklearn \
             python3-pip \
             python3-setuptools \
+            tox \
             virtualenv
 
 # Python packages
@@ -29,6 +30,5 @@ ADD     . /code/
 
 # The service
 WORKDIR /code
-ENV     BASEPATH /code
-RUN     make install
+# RUN     make install
 CMD     true

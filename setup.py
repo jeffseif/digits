@@ -14,8 +14,9 @@ setup(
     description=__description__,
     install_requires=[
         'numpy>=1.11.3',
-        'scipy>=0.18.1',
+        'Pillow>=3.4.2',
         'scikit-learn>=0.18.1',
+        'scipy>=0.18.1',
     ],
     name=__program__,
     packages=[__program__],
