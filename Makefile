@@ -27,13 +27,14 @@ model.pkl: corpus
 		train \
 		--model-filename=$@ \
 		--show-score
+	@touch $@
 
 corpus:
 	@mkdir -p $@
 	@./get_corpus.sh
 	@touch $@
 
-test:
+test: venv
 	@venv/bin/tox
 
 clean:
