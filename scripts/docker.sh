@@ -1,7 +1,5 @@
 #! /bin/bash
 
-./fonts.sh ;
-
 CONTAINERS="$(docker ps | grep digits | cut -f1 -d' ')" ;
 [ -z ${CONTAINERS} ] && docker kill "${CONTAINERS}" ;
 docker build --tag digits . ;

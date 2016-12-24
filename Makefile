@@ -31,7 +31,7 @@ model.pkl: venv corpus
 
 corpus:
 	@mkdir -p $@
-	@./get_corpus.sh
+	@./scripts/get_corpus.sh
 	@touch $@
 
 test: venv

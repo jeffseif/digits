@@ -16,10 +16,10 @@ A digit classifier
 
 ### Example invocation
 
-    > ./digits.sh --help
+    > ./scripts/digits.sh --help
 
     FIXME
 
-    > ./digits.sh
+    > ./scripts/digits.sh
 
     FIXME
