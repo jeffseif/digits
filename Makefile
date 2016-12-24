@@ -6,7 +6,7 @@ install: venv/.setup
 	@true
 
 venv/.setup: venv
-	@venv/bin/python setup.py \
+	@$</bin/python setup.py \
 		install \
 		--quiet
 	@touch $@
@@ -22,8 +22,8 @@ venv: requirements.txt
 
 train: model.pkl
 
-model.pkl: corpus
-	@venv/bin/python -m digits.main \
+model.pkl: venv corpus
+	@$</bin/python -m digits.main \
 		train \
 		--model-filename=$@ \
 		--show-score
@@ -35,7 +35,7 @@ corpus:
 	@touch $@
 
 test: venv
-	@venv/bin/tox
+	@$</bin/tox
 
 clean:
 	venv/bin/python setup.py clean --all
