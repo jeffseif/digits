@@ -47,13 +47,13 @@ class Model(Logger):
         return np.concatenate(features, axis=0), np.array(labels)
 
     def fit_model(self):
-        self.info('Training ...')
+        self.info('Training classifier ...')
         self.clf = svm.SVC(**self.PARAMS)
         self.clf.fit(*self.train)
         self.info('... done!')
 
     def validate_classifier(self):
-        self.info('Validating ...')
+        self.info('Validating classifier ...')
         score = self.clf.score(*self.test)
         self.info('... done; F1 score: {:.2%}'.format(score))
 
