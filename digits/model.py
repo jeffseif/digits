@@ -4,6 +4,7 @@ import pickle
 from sklearn import svm
 
 from digits.corpus import Corpus
+from digits.image import Image
 
 
 class Model:
@@ -14,19 +15,19 @@ class Model:
     }
     
     def train(self, show_score):
-        self.load_corpus()
-        self.fit()
+        self.index_corpus()
+        self.fit_model()
         if show_score:
-            self.score()
+            self.score_classifier()
         return self
 
-    def load_corpus(self):
-        print('Loading corpus ...')
+    def index_corpus(self):
+        print('Indexing corpus ...')
         train = {}
         test = {}
         for digit in range(10):
-            train[digit] = list(Corpus(digit, True))
-            test[digit] = list(Corpus(digit, False))
+            train[digit] = Corpus(digit, True)
+            test[digit] = Corpus(digit, False)
         print('... done!')
 
         print('Flattening features ...')
@@ -39,19 +40,19 @@ class Model:
         features = []
         labels = []
         for label, it in data.items():
-            images = list(it)
+            images = list(map(Image.file_to_array, it))
             length = len(images)
             features.append(np.array(images).reshape((length, -1)))
             labels.extend([label] * length)
         return np.concatenate(features, axis=0), np.array(labels)
 
-    def fit(self):
+    def fit_model(self):
         print('Training ...')
         self.clf = svm.SVC(**self.PARAMS)
         self.clf.fit(*self.train)
         print('... done!')
 
-    def score(self):
+    def score_classifier(self):
         print('Scoring ...')
         score = self.clf.score(*self.test)
         print('... done; F1 score: {:.2%}'.format(score))
@@ -71,7 +72,7 @@ class Model:
         return self
 
     def classify_image(self, path_to_image):
-        array = Corpus.path_to_array(path_to_image)
+        array = Image.file_to_array(path_to_image)
         features, _ = self.flatten({None: [array]})
         prediction = self.clf.predict(features)
         return prediction[0]
