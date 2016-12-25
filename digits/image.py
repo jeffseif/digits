@@ -9,18 +9,26 @@ class Image(Logger):
     ZOOM_ORDER = 5
 
     @classmethod
-    def file_to_array(cls, file_or_path):
-        image = ndimage.imread(file_or_path)
-        zoom = cls.shape_to_zoom(image.shape)
-        return ndimage.zoom(
-            image,
-            zoom,
+    def file_to_features(cls, file_or_path):
+        array = ndimage.imread(file_or_path)
+        return cls.array_to_features(array)
+
+    @classmethod
+    def array_to_features(cls, array):
+        zoomed = ndimage.zoom(
+            array,
+            cls.get_array_zoom(array),
             order=cls.ZOOM_ORDER,
+        )
+        return cls.zoomed_to_features(zoomed)
+
+    @classmethod
+    def get_array_zoom(cls, array):
+        return tuple(
+            num / denom
+            for denom, num in zip(array.shape, cls.RESOLUTION)
         )
 
     @classmethod
-    def shape_to_zoom(cls, shape):
-        return tuple(
-            num / denom
-            for denom, num in zip(shape, cls.RESOLUTION)
-        )
+    def zoomed_to_features(cls, zoomed):
+        return zoomed.reshape((1, -1))

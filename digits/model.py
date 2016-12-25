@@ -16,35 +16,34 @@ class Model(Logger):
     }
     
     def train(self, validate):
-        self.index_corpus()
+        self.build_corpus()
         self.fit_model()
         if validate:
             self.validate_classifier()
         return self
 
-    def index_corpus(self):
-        self.info('Indexing corpus ...')
-        train = {}
-        test = {}
+    def build_corpus(self):
+        self.info('Building corpus ...')
+        train_paths = {}
+        test_paths = {}
         for digit in range(10):
-            train[digit] = Corpus(digit, True)
-            test[digit] = Corpus(digit, False)
+            train_paths[digit] = Corpus(digit, True)
+            test_paths[digit] = Corpus(digit, False)
         self.info('... done!')
 
-        self.info('Flattening features ...')
-        self.train = self.flatten(train)
-        self.test = self.flatten(test)
+        self.info('Featurizing corpus ...')
+        self.train = self.featurize_paths(train_paths)
+        self.test = self.featurize_paths(test_paths)
         self.info('... done!')
 
     @staticmethod
-    def flatten(data):
+    def featurize_paths(label_to_paths):
         features = []
         labels = []
-        for label, it in data.items():
-            images = list(map(Image.file_to_array, it))
-            length = len(images)
-            features.append(np.array(images).reshape((length, -1)))
-            labels.extend([label] * length)
+        for label, path_iter in label_to_paths.items():
+            images = list(map(Image.file_to_features, path_iter))
+            features.extend(images)
+            labels.extend([label] * len(images))
         return np.concatenate(features, axis=0), np.array(labels)
 
     def fit_model(self):
@@ -73,7 +72,10 @@ class Model(Logger):
         return self
 
     def classify_image(self, path_to_image):
-        image_map = {None: [path_to_image]}
-        features, _ = self.flatten(image_map)
+        self.info('Featurizing {} ...'.format(path_to_image))
+        features = Image.file_to_features(path_to_image)
+        self.info('... done!')
+        self.info('Classifying ...')
         prediction = self.clf.predict(features)
+        self.info('... done!')
         return prediction[0]
