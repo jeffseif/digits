@@ -1,4 +1,3 @@
-#! /usr/bin/env python3
 from setuptools import setup
 from digits import __author__
 from digits import __description__
