@@ -78,7 +78,7 @@ class Model(Logger):
         return self.classify(features)
 
     def classify_blob(self, blob):
-        self.info('Featurizing {} ...'.format(path_to_image))
+        self.info('Featurizing blob ...')
         features = Image.array_to_features(blob)
         self.info('... done!')
         return self.classify(features)
