@@ -1,7 +1,9 @@
 import random
 
+from digits.logger import Logger
 
-class Corpus:
+
+class Corpus(Logger):
 
     FRACTION_IN_TRAINING_SET = 0.5
     PATH_FORMAT = 'corpus/English/Fnt/Sample{digit:03d}/img{digit:03d}-{index:05d}.png'

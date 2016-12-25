@@ -3,6 +3,7 @@ from digits import __description__
 from digits import __version__
 from digits import __year__
 from digits import DEFAULT_MODEL_FILENAME
+from digits.logger import set_logging_verbosity
 from digits.model import Model
 
 
@@ -24,24 +25,29 @@ def main():
         action='version',
         version='%(prog)s {}'.format(__version__author__year__),
     )
-    parser.add_argument(
+    subparsers = parser.add_subparsers()
+
+    # Parent
+    parent = argparse.ArgumentParser(add_help=False)
+    parent.add_argument(
         '-v',
         '--verbose',
         action='count',
         default=0,
         help='Increase output verbosity',
     )
-    subparsers = parser.add_subparsers(help='Additional help')
+    parent.add_argument(
+        '--model-filename',
+        default=DEFAULT_MODEL_FILENAME,
+        help='Where to serialize to',
+    )
+    parents = (parent,)
 
     # Train
     train_parser = subparsers.add_parser(
         'train',
+        parents=parents,
         help='Train the digit classifier',
-    )
-    train_parser.add_argument(
-        '--model-filename',
-        default=DEFAULT_MODEL_FILENAME,
-        help='Where to serialize to',
     )
     train_parser.add_argument(
         '--show-score',
@@ -54,22 +60,20 @@ def main():
     # Classify
     classify_parser = subparsers.add_parser(
         'classify', 
-        help='Train the digit classifier',
+        parents=parents,
+        help='Classify an image',
     )
     classify_parser.add_argument(
         'path_to_image',
         default=DEFAULT_MODEL_FILENAME,
         help='The image to classify',
     )
-    classify_parser.add_argument(
-        '--model-filename',
-        default=DEFAULT_MODEL_FILENAME,
-        help='Where to deserialize from',
-    )
     classify_parser.set_defaults(func=classify)
 
     args = parser.parse_args()
-    args.func(args)
+    set_logging_verbosity(args.verbose)
+    if hasattr(args, 'func'):
+        args.func(args)
 
 
 def train(args):

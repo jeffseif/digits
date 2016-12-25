@@ -1,7 +1,9 @@
 from scipy import ndimage
 
+from digits.logger import Logger
 
-class Image:
+
+class Image(Logger):
 
     RESOLUTION = (16, 16)
     ZOOM_ORDER = 5

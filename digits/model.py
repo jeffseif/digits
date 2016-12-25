@@ -5,9 +5,10 @@ from sklearn import svm
 
 from digits.corpus import Corpus
 from digits.image import Image
+from digits.logger import Logger
 
 
-class Model:
+class Model(Logger):
 
     PARAMS = {
         'degree': 5,
@@ -22,18 +23,18 @@ class Model:
         return self
 
     def index_corpus(self):
-        print('Indexing corpus ...')
+        self.info('Indexing corpus ...')
         train = {}
         test = {}
         for digit in range(10):
             train[digit] = Corpus(digit, True)
             test[digit] = Corpus(digit, False)
-        print('... done!')
+        self.info('... done!')
 
-        print('Flattening features ...')
+        self.info('Flattening features ...')
         self.train = self.flatten(train)
         self.test = self.flatten(test)
-        print('... done!')
+        self.info('... done!')
 
     @staticmethod
     def flatten(data):
@@ -47,28 +48,28 @@ class Model:
         return np.concatenate(features, axis=0), np.array(labels)
 
     def fit_model(self):
-        print('Training ...')
+        self.info('Training ...')
         self.clf = svm.SVC(**self.PARAMS)
         self.clf.fit(*self.train)
-        print('... done!')
+        self.info('... done!')
 
     def score_classifier(self):
-        print('Scoring ...')
+        self.info('Scoring ...')
         score = self.clf.score(*self.test)
-        print('... done; F1 score: {:.2%}'.format(score))
+        self.info('... done; F1 score: {:.2%}'.format(score))
 
     def save(self, model_filename):
-        print('Serializing to {} ...'.format(model_filename))
+        self.info('Serializing to {} ...'.format(model_filename))
         with open(model_filename, 'wb') as f:
             pickle.dump(self.clf, f)
-        print('... done!')
+        self.info('... done!')
         return self
 
     def load(self, model_filename):
-        print('Deserializing from {} ...'.format(model_filename))
+        self.info('Deserializing from {} ...'.format(model_filename))
         with open(model_filename, 'rb') as f:
             self.clf = pickle.load(f)
-        print('... done!')
+        self.info('... done!')
         return self
 
     def classify_image(self, path_to_image):
