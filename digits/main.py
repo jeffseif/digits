@@ -1,23 +1,9 @@
-#! /usr/bin/env python3
 from digits import __author__
 from digits import __description__
 from digits import __version__
 from digits import __year__
 from digits import DEFAULT_MODEL_FILENAME
 from digits.model import Model
-
-
-def train(args):
-    Model() \
-        .train(args.show_score) \
-        .save(args.model_filename)
-
-
-def classify(args):
-    digit = Model() \
-        .load(args.model_filename) \
-        .classify_image(args.path_to_image)
-    print('Digit is {}'.format(digit))
 
 
 def main():
@@ -84,6 +70,19 @@ def main():
 
     args = parser.parse_args()
     args.func(args)
+
+
+def train(args):
+    Model() \
+        .train(args.show_score) \
+        .save(args.model_filename)
+
+
+def classify(args):
+    digit = Model() \
+        .load(args.model_filename) \
+        .classify_image(args.path_to_image)
+    print('Digit is {}'.format(digit))
 
 
 if __name__ == '__main__':

@@ -17,9 +17,35 @@ A digit classifier
 ### Example invocation
 
     > ./scripts/digits.sh --help
+    usage: main.py [-h] [--version] [-v] {train,classify} ...
 
-    FIXME
+    A digit classifier
 
-    > ./scripts/digits.sh
+    positional arguments:
+      {train,classify}  Additional help
+        train           Train the digit classifier
+        classify        Train the digit classifier
 
-    FIXME
+    optional arguments:
+      -h, --help        show this help message and exit
+      --version         show program's version number and exit
+      -v, --verbose     Increase output verbosity
+
+    Version 1.0.0 | Jeffrey Seifried 2016
+
+    > ./scripts/digits.sh train
+    Loading corpus ...
+    ... done!
+    Flattening features ...
+    ... done!
+    Training ...
+    ... done!
+    Scoring ...
+    ... done; F1 score: 96.39%
+    Serializing to model.pkl ...
+    ... done!
+
+    > ./scripts/digits.sh classify /path/to/eight.png
+    Deserializing from model.pkl ...
+    ... done!
+    Digit is 8
