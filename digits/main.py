@@ -50,7 +50,7 @@ def main():
         help='Train the digit classifier',
     )
     train_parser.add_argument(
-        '--show-score',
+        '--validate',
         action='store_true',
         default=False,
         help='Show F1 score',
@@ -78,7 +78,7 @@ def main():
 
 def train(args):
     Model() \
-        .train(args.show_score) \
+        .train(args.validate) \
         .save(args.model_filename)
 
 

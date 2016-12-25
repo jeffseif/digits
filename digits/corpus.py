@@ -20,6 +20,7 @@ class Corpus(Logger):
                 index=index+1,
             )
             if self.is_thing_training_set(path) is self.is_training_set:
+                self.debug(path)
                 yield path
 
     @classmethod

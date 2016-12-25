@@ -15,11 +15,11 @@ class Model(Logger):
         'kernel':'poly',
     }
     
-    def train(self, show_score):
+    def train(self, validate):
         self.index_corpus()
         self.fit_model()
-        if show_score:
-            self.score_classifier()
+        if validate:
+            self.validate_classifier()
         return self
 
     def index_corpus(self):
@@ -53,8 +53,8 @@ class Model(Logger):
         self.clf.fit(*self.train)
         self.info('... done!')
 
-    def score_classifier(self):
-        self.info('Scoring ...')
+    def validate_classifier(self):
+        self.info('Validating ...')
         score = self.clf.score(*self.test)
         self.info('... done; F1 score: {:.2%}'.format(score))
 
