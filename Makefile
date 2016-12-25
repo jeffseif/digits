@@ -26,7 +26,7 @@ model.pkl: venv corpus
 	@$</bin/python -m digits.main \
 		train \
 		--model-filename=$@ \
-		--show-score
+		--validate
 	@touch $@
 
 corpus:

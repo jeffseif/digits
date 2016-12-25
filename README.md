@@ -17,35 +17,34 @@ A digit classifier
 ### Example invocation
 
     > ./scripts/digits.sh --help
-    usage: main.py [-h] [--version] [-v] {train,classify} ...
+    usage: main.py [-h] [--version] {train,classify} ...
 
     A digit classifier
 
     positional arguments:
-      {train,classify}  Additional help
+      {train,classify}
         train           Train the digit classifier
-        classify        Train the digit classifier
+        classify        Classify an image
 
     optional arguments:
       -h, --help        show this help message and exit
       --version         show program's version number and exit
-      -v, --verbose     Increase output verbosity
 
     Version 1.0.0 | Jeffrey Seifried 2016
 
-    > ./scripts/digits.sh train
-    Loading corpus ...
-    ... done!
-    Flattening features ...
-    ... done!
-    Training ...
-    ... done!
-    Scoring ...
-    ... done; F1 score: 96.39%
-    Serializing to model.pkl ...
-    ... done!
+    > ./scripts/digits.sh train --verbose --validate
+    INFO:digits:Indexing corpus ...
+    INFO:digits:... done!
+    INFO:digits:Flattening features ...
+    INFO:digits:... done!
+    INFO:digits:Training ...
+    INFO:digits:... done!
+    INFO:digits:Validating ...
+    INFO:digits:... done; F1 score: 96.39%
+    INFO:digits:Serializing to model.pkl ...
+    INFO:digits:... done!
 
     > ./scripts/digits.sh classify /path/to/eight.png
-    Deserializing from model.pkl ...
-    ... done!
+    INFO:digits:Deserializing from model.pkl ...
+    INFO:digits:... done!
     Digit is 8

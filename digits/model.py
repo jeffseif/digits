@@ -73,7 +73,7 @@ class Model(Logger):
         return self
 
     def classify_image(self, path_to_image):
-        array = Image.file_to_array(path_to_image)
-        features, _ = self.flatten({None: [array]})
+        image_map = {None: [path_to_image]}
+        features, _ = self.flatten(image_map)
         prediction = self.clf.predict(features)
         return prediction[0]
