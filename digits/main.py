@@ -7,6 +7,19 @@ from digits import DEFAULT_MODEL_FILENAME
 from digits.model import Model
 
 
+def train(args):
+    Model() \
+        .train(args.show_score) \
+        .save(args.model_filename)
+
+
+def classify(args):
+    digit = Model() \
+        .load(args.model_filename) \
+        .classify_image(args.path_to_image)
+    print('Digit is {}'.format(digit))
+
+
 def main():
     import argparse
 
@@ -32,30 +45,45 @@ def main():
         default=0,
         help='Increase output verbosity',
     )
-    parser.add_argument(
+    subparsers = parser.add_subparsers(help='Additional help')
+
+    # Train
+    train_parser = subparsers.add_parser(
+        'train',
+        help='Train the digit classifier',
+    )
+    train_parser.add_argument(
         '--model-filename',
         default=DEFAULT_MODEL_FILENAME,
-        help='Path to classifier serialization',
+        help='Where to serialize to',
     )
-    parser.add_argument(
+    train_parser.add_argument(
         '--show-score',
         action='store_true',
         default=False,
-        help='Show classifier F1 score',
+        help='Show F1 score',
     )
-    parser.add_argument(
-        'mode',
-        choices=(
-            'load',
-            'train',
-        ),
-    )
-    args = parser.parse_args()
+    train_parser.set_defaults(func=train)
 
-    if args.mode == 'train':
-        Model(args).train()
-    elif args.mode == 'load':
-        Model(args).load()
+    # Classify
+    classify_parser = subparsers.add_parser(
+        'classify', 
+        help='Train the digit classifier',
+    )
+    classify_parser.add_argument(
+        'path_to_image',
+        default=DEFAULT_MODEL_FILENAME,
+        help='The image to classify',
+    )
+    classify_parser.add_argument(
+        '--model-filename',
+        default=DEFAULT_MODEL_FILENAME,
+        help='Where to deserialize from',
+    )
+    classify_parser.set_defaults(func=classify)
+
+    args = parser.parse_args()
+    args.func(args)
 
 
 if __name__ == '__main__':

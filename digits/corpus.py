@@ -24,21 +24,24 @@ class Corpus:
             if self.is_thing_training_set(path) is self.is_training_set:
                 yield self.path_to_array(path)
 
-    def is_thing_training_set(self, thing):
+    @classmethod
+    def is_thing_training_set(cls, thing):
         random.seed(thing)
-        return random.random() < self.FRACTION_IN_TRAINING_SET
+        return random.random() < cls.FRACTION_IN_TRAINING_SET
 
-    def path_to_array(self, path):
+    @classmethod
+    def path_to_array(cls, path):
         image = ndimage.imread(path)
-        zoom = self.shape_to_zoom(image.shape)
+        zoom = cls.shape_to_zoom(image.shape)
         return ndimage.zoom(
             image,
             zoom,
-            order=self.ZOOM_ORDER,
+            order=cls.ZOOM_ORDER,
         )
 
-    def shape_to_zoom(self, shape):
+    @classmethod
+    def shape_to_zoom(cls, shape):
         return tuple(
             num / denom
-            for denom, num in zip(shape, self.RESOLUTION)
+            for denom, num in zip(shape, cls.RESOLUTION)
         )

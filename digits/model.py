@@ -13,19 +13,12 @@ class Model:
         'kernel':'poly',
     }
     
-    def __init__(self, args):
-        self.model_filename = args.model_filename
-        self.show_score = args.show_score
-
-    def train(self):
+    def train(self, show_score):
         self.load_corpus()
         self.fit()
-        if self.show_score:
+        if show_score:
             self.score()
-        self.save()
-
-    def __call__(self, x):
-        return self.clf.predict(x)
+        return self
 
     def load_corpus(self):
         print('Loading corpus ...')
@@ -63,14 +56,22 @@ class Model:
         score = self.clf.score(*self.test)
         print('... done; F1 score: {:.2%}'.format(score))
 
-    def save(self):
-        print('Serializing to {} ...'.format(self.model_filename))
-        with open(self.model_filename, 'wb') as f:
+    def save(self, model_filename):
+        print('Serializing to {} ...'.format(model_filename))
+        with open(model_filename, 'wb') as f:
             pickle.dump(self.clf, f)
         print('... done!')
+        return self
 
-    def load(self):
-        print('Deserializing from {} ...'.format(self.model_filename))
-        with open(self.model_filename, 'rb') as f:
+    def load(self, model_filename):
+        print('Deserializing from {} ...'.format(model_filename))
+        with open(model_filename, 'rb') as f:
             self.clf = pickle.load(f)
         print('... done!')
+        return self
+
+    def classify_image(self, path_to_image):
+        array = Corpus.path_to_array(path_to_image)
+        features, _ = self.flatten({None: [array]})
+        prediction = self.clf.predict(features)
+        return prediction[0]
