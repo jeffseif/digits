@@ -9,6 +9,12 @@ from digits.image import Image
 from digits.logger import Logger
 
 
+def get_parent_directory():
+    import os 
+    this_directory = os.path.dirname(os.path.realpath(__file__))
+    return '{}/../'.format(this_directory)
+
+
 class Model(Logger):
 
     PARAMS = {
@@ -58,14 +64,14 @@ class Model(Logger):
         score = self.clf.score(*self.test)
         self.info('... done; F1 score: {:.2%}'.format(score))
 
-    def save(self, model_filename=DEFAULT_MODEL_FILENAME):
+    def save(self, model_filename=get_parent_directory() + DEFAULT_MODEL_FILENAME):
         self.info('Serializing to {} ...'.format(model_filename))
         with open(model_filename, 'wb') as f:
             pickle.dump(self.clf, f)
         self.info('... done!')
         return self
 
-    def load(self, model_filename=DEFAULT_MODEL_FILENAME):
+    def load(self, model_filename=get_parent_directory() + DEFAULT_MODEL_FILENAME):
         self.info('Deserializing from {} ...'.format(model_filename))
         with open(model_filename, 'rb') as f:
             self.clf = pickle.load(f)
