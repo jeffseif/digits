@@ -10,32 +10,33 @@ from digits import __url__
 from digits import __version__
 
 
-def post_build():
-    import subprocess
-    subprocess.run(['./scripts/fetch_corpus.sh'])
+def add_post_build_to_run(cls):
 
-    from digits.main import train_for_setup_dot_py
-    train_for_setup_dot_py()
+    original_run = cls.run
 
+    def run_with_post_build(self):
+        # Run intact method
+        original_run(self)
 
-class DevelopPlusBuild(develop):
-    def run(self):
-        super().run()
-        post_build()
+        # Fetch corpus
+        import subprocess
+        subprocess.run(['./scripts/fetch_corpus.sh'])
 
+        # Train model
+        from digits.main import train_model_for_setup_dot_py
+        train_model_for_setup_dot_py()
 
-class InstallPlusBuild(install):
-    def run(self):
-        super().run()
-        post_build()
+    cls.run = run_with_post_build
+
+    return cls
 
 
 setup(
     author=__author__,
     author_email=__email__,
     cmdclass={
-        'develop':DevelopPlusBuild,
-        'install':InstallPlusBuild,
+        'develop':add_post_build_to_run(develop),
+        'install':add_post_build_to_run(install),
     },
     description=__description__,
     install_requires=[

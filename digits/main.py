@@ -82,8 +82,7 @@ def train(args):
         .save(args.model_filename)
 
 
-def train_for_setup_dot_py():
-    set_logging_verbosity(1)
+def train_model_for_setup_dot_py():
     Model() \
         .train() \
         .save()
