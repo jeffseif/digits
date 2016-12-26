@@ -1,4 +1,5 @@
 from setuptools import setup
+from setuptools.command.develop import develop
 from setuptools.command.install import install
 
 from digits import __author__
@@ -9,25 +10,31 @@ from digits import __url__
 from digits import __version__
 
 
+def post_build():
+    import subprocess
+    subprocess.run(['./scripts/fetch_corpus.sh'])
+
+    from digits.main import train_for_setup_dot_py
+    train_for_setup_dot_py()
+
+
+class DevelopPlusBuild(develop):
+    def run(self):
+        super().run()
+        post_build()
+
+
 class InstallPlusBuild(install):
     def run(self):
         super().run()
-        self.fetch_corpus()
-        self.train_model()
-
-    def fetch_corpus(self):
-        import subprocess
-        subprocess.run(['./scripts/get_corpus.sh'])
-        
-    def train_model(self):
-        from digits.main import train_for_setup_dot_py
-        train_for_setup_dot_py()
+        post_build()
 
 
 setup(
     author=__author__,
     author_email=__email__,
     cmdclass={
+        'develop':DevelopPlusBuild,
         'install':InstallPlusBuild,
     },
     description=__description__,
