@@ -1,6 +1,6 @@
-.PHONY: all clean install test train
+.PHONY: all clean install test
 
-all: install train
+all: install
 
 install: venv/.setup
 	@true
@@ -18,20 +18,6 @@ venv: requirements.txt
 		$@
 	@$@/bin/pip install \
 		--requirement $<
-	@touch $@
-
-train: model.pkl
-
-model.pkl: venv corpus
-	@$</bin/python -m digits.main \
-		train \
-		--model-filename=$@ \
-		--validate
-	@touch $@
-
-corpus:
-	@mkdir -p $@
-	@./scripts/get_corpus.sh
 	@touch $@
 
 test: venv

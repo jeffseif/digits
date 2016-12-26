@@ -3,6 +3,7 @@ import pickle
 
 from sklearn import svm
 
+from digits import DEFAULT_MODEL_FILENAME
 from digits.corpus import Corpus
 from digits.image import Image
 from digits.logger import Logger
@@ -15,7 +16,7 @@ class Model(Logger):
         'kernel':'poly',
     }
     
-    def train(self, validate):
+    def train(self, validate=False):
         self.build_corpus()
         self.fit_model()
         if validate:
@@ -57,14 +58,14 @@ class Model(Logger):
         score = self.clf.score(*self.test)
         self.info('... done; F1 score: {:.2%}'.format(score))
 
-    def save(self, model_filename):
+    def save(self, model_filename=DEFAULT_MODEL_FILENAME):
         self.info('Serializing to {} ...'.format(model_filename))
         with open(model_filename, 'wb') as f:
             pickle.dump(self.clf, f)
         self.info('... done!')
         return self
 
-    def load(self, model_filename):
+    def load(self, model_filename=DEFAULT_MODEL_FILENAME):
         self.info('Deserializing from {} ...'.format(model_filename))
         with open(model_filename, 'rb') as f:
             self.clf = pickle.load(f)

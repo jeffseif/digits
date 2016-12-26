@@ -82,6 +82,13 @@ def train(args):
         .save(args.model_filename)
 
 
+def train_for_setup_dot_py():
+    set_logging_verbosity(1)
+    Model() \
+        .train() \
+        .save()
+
+
 def classify(args):
     digit = Model() \
         .load(args.model_filename) \
