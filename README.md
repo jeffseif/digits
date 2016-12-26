@@ -2,6 +2,8 @@
 
 A digit classifier
 
+Printed digits for the numbers `0` through `9` are extracted from [The Chars74K dataset](http://www.ee.surrey.ac.uk/CVSSP/demos/chars74k/) and a [scikit learn SVM classifier](http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) is trained upon them.
+
 ## Package
 
 ### Installation
