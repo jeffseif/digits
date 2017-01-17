@@ -8,7 +8,7 @@ fi
 TARBALL="${DAT}digits.tar.gz" ;
 URL='http://www.ee.surrey.ac.uk/CVSSP/demos/chars74k/EnglishFnt.tgz' ;
 if [ ! -e "${TARBALL}" ] ; then
-    curl "${URL}" --output "${TARBALL}" ;
+    wget "${URL}" --output-file "${TARBALL}" ;
 fi
 
 TAR_DIRECTORY_FORMAT='English/Fnt/Sample%03d/' ;
