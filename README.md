@@ -32,7 +32,7 @@ Printed digits for the numbers `0` through `9` are extracted from [The Chars74K 
       -h, --help        show this help message and exit
       --version         show program's version number and exit
 
-    Version 1.0.0 | Jeffrey Seifried 2016
+    Version 1.0.0 | Jeffrey Seifried 2017
 
     > ./scripts/digits.sh train --verbose --validate
     INFO:digits:Building corpus ...
