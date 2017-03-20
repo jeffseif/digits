@@ -59,7 +59,7 @@ def main():
 
     # Classify
     classify_parser = subparsers.add_parser(
-        'classify', 
+        'classify',
         parents=parents,
         help='Classify an image',
     )
@@ -77,21 +77,27 @@ def main():
 
 
 def train(args):
-    Model() \
-        .train(args.validate) \
+    (
+        Model()
+        .train(args.validate)
         .save(args.model_filename)
+    )
 
 
 def train_model_for_setup_dot_py():
-    Model() \
-        .train() \
+    (
+        Model()
+        .train()
         .save()
+    )
 
 
 def classify(args):
-    digit = Model() \
-        .load(args.model_filename) \
+    digit = (
+        Model()
+        .load(args.model_filename)
         .classify_image(args.path_to_image)
+    )
     print('Digit is {}'.format(digit))
 
 

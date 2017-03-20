@@ -10,7 +10,7 @@ from digits.logger import Logger
 
 
 def get_parent_directory():
-    import os 
+    import os
     this_directory = os.path.dirname(os.path.realpath(__file__))
     return '{}/../'.format(this_directory)
 
@@ -19,9 +19,9 @@ class Model(Logger):
 
     PARAMS = {
         'degree': 5,
-        'kernel':'poly',
+        'kernel': 'poly',
     }
-    
+
     def train(self, validate=False):
         self.build_corpus()
         self.fit_model()

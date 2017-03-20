@@ -35,8 +35,8 @@ setup(
     author=__author__,
     author_email=__email__,
     cmdclass={
-        'develop':add_post_build_to_run(develop),
-        'install':add_post_build_to_run(install),
+        'develop': add_post_build_to_run(develop),
+        'install': add_post_build_to_run(install),
     },
     description=__description__,
     install_requires=[
@@ -48,6 +48,7 @@ setup(
     name=__program__,
     packages=[__program__],
     platforms='all',
+    scripts=['./scripts/fetch_corpus.sh'],
     setup_requires=[
         'setuptools',
         'tox',

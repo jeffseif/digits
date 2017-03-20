@@ -15,6 +15,6 @@ TAR_DIRECTORY_FORMAT='English/Fnt/Sample%03d/' ;
 for INDEX in {1..10} ; do
     TAR_DIRECTORY=$(printf "${TAR_DIRECTORY_FORMAT}" "${INDEX}") ;
     if [ ! -d "${DAT}${TAR_DIRECTORY}" ] ; then
-        tar -xzvf "${TARBALL}" -C "${DAT}" "${TAR_DIRECTORY}" ;
+        tar -xzvf "${TARBALL}" -C "${DAT}" "${TAR_DIRECTORY}" &
     fi
 done

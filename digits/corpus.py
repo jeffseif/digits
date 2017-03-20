@@ -12,12 +12,12 @@ class Corpus(Logger):
     def __init__(self, digit, is_training_set):
         self.digit = digit
         self.is_training_set = is_training_set
-    
+
     def __iter__(self):
         for index in range(self.IMAGES_PER_DIGIT):
             path = self.PATH_FORMAT.format(
-                digit=self.digit+1,
-                index=index+1,
+                digit=self.digit + 1,
+                index=index + 1,
             )
             if self.is_thing_training_set(path) is self.is_training_set:
                 self.debug(path)
