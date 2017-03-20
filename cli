@@ -1,0 +1,9 @@
+#! /bin/bash
+
+# Setup
+
+make ;
+
+# Run
+
+./venv/bin/python -m digits.main "$@" ;
