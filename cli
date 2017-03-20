@@ -1,9 +1,5 @@
 #! /bin/bash
 
-# Setup
+MODULE=$(basename $(pwd)) ;
 
-make ;
-
-# Run
-
-./venv/bin/python -m digits.main "$@" ;
+make && ./venv/bin/python -m "${MODULE}.main" "$@" ;
